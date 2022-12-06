@@ -27,5 +27,4 @@ app.listen(3000);
 // get products @ buyer(get)
 // get products @ seller(get)
 // create address @ buyer(post)
-
 // read about CRUD
