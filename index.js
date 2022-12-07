@@ -10,6 +10,7 @@ const router = express.Router()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const bcrypt= require("bcrypt");
+const e = require("express");
 
 
 
@@ -61,6 +62,29 @@ app.post("/signup",(req,res)=>{
                 }
             }
         )
+})
+app.post("/login", (req,res)=>{
+    const{phone_no, password}=req.body;
+    db.query(
+        `SELECT * FROM ecom_mom.user WHERE user.phone_no = ${phone_no}`, async(err,result)=>{
+            if(err){
+                res.status(400).send(err);
+            }else{
+            //   console.log("result: ", result);
+                if(result.length){
+                    if(bcrypt.compareSync(password,result[0].password )){
+                        res.status(200).send(result);
+                    }else{
+                        res.status(200).send({ message: "Invalid Password" });
+                    }
+                }else{
+                    res.status(400).send("Invalid Phone Number");
+                }
+            }
+        }
+
+    )
+
 })
 
 app.listen(3000);
