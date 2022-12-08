@@ -20,7 +20,6 @@ class AuthController {
         if (err) {
           res.status(400).send(err);
         } else {
-          //   console.log("result: ", result);
           if (result.length) {
             if (bcrypt.compareSync(password, result[0].password)) {
               console.log(result)
@@ -33,7 +32,7 @@ class AuthController {
               result[0]["token"] = jwt_login;
               console.log(result);
               const last_login = new Date().toISOString();
-              //runquery from here
+              db.query(`UPDATE ecom_mom.user SET user.last_login= '${last_login}' WHERE user_id = '${result[0].user_id}';`)
               res.status(200).send(result);
             } else {
               res.status(200).send({ message: "Invalid Password" });
@@ -49,7 +48,6 @@ class AuthController {
   userSignup = async (req, res) => {
     const { user_name, first_name, last_name, phone_no, password } = req.body;
     console.log(user_name, last_name);
-    // res.status(200).send(last_name);
     db.query(
       `SELECT * FROM ecom_mom.user WHERE user.phone_no = ${phone_no}`,
       async (err, result) => {
