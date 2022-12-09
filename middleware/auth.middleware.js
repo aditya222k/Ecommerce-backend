@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = process.env;
-import { Request, Response,NextFunction } from "express";
+
 
 
 const verifyToken = (req,res,next)=>{

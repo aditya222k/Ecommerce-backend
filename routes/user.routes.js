@@ -5,10 +5,15 @@ const router = express.Router()
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const AuthController = require("../controller/auth.controller.js");
+const verifyToken = require("../middleware/auth.middleware");
+
 
 const{userLogin, userSignup} = new AuthController();
 
 router.post("/signup",userSignup);
 router.post("/login", userLogin);
-
+router.post("/check",verifyToken,(req,res)=>{
+    // console.log(verifyToken.res.body)
+    res.status(400).send("verify token is working")
+})
 module.exports=router
