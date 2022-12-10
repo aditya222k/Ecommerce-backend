@@ -7,9 +7,11 @@ app.use(bodyParser.json());
 const AuthController = require("../controller/auth.controller.js");
 const verifyToken = require("../middleware/auth.middleware");
 
-const{sellerLogin } = new AuthController();
+const{sellerLogin,sellerSignup } = new AuthController();
 
 
-router.post("/seller_login", sellerLogin );
+
+router.post("/sellerLogin", sellerLogin );
+router.post("/sellerSignup",sellerSignup);
 
   module.exports=router
