@@ -12,8 +12,11 @@ const{userLogin, userSignup} = new AuthController();
 
 router.post("/signup",userSignup);
 router.post("/login", userLogin);
+// code to check if verify token is working
 router.post("/check",verifyToken,(req,res)=>{
+    console.log('req: ', req.mukesh.id);
     // console.log(verifyToken.res.body)
     res.status(400).send("verify token is working")
+    
 })
 module.exports=router

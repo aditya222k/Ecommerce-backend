@@ -10,7 +10,7 @@ const verifyToken = (req,res,next)=>{
     }else{
         try{
             const decode = jwt.verify(token, config.JWT_TOKEN_KEY);
-            req.body = decode;
+            req.mukesh = decode;
             console.log(decode);
 
         }catch(err){
@@ -21,4 +21,4 @@ const verifyToken = (req,res,next)=>{
 
 }
 
-module.exports= verifyToken
+module.exports= verifyToken 

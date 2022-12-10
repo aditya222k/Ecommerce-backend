@@ -6,10 +6,13 @@ const app = express();
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-const user= require("./routes/user.routes.js")
+const user= require("./routes/user.routes.js");
+const seller = require("./routes/seller.routes.js");
+
 
 
 app.use(user);
+app.use(seller)
 
 // Default Route
 app.get("*", (req, res) => {
