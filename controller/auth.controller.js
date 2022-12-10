@@ -89,6 +89,40 @@ class AuthController {
       }
     );
   };
+
+  sellerLogin= async (req,res)=>{
+    const { phone_no, password } = req.body;
+    db.query(
+      `SELECT * FROM ecom_mom.seller WHERE seller.phone_no = ${phone_no}`,
+      async (err, result) => {
+        if (err) {
+          res.status(400).send(err);
+          console.log("error here:",err)
+        } else {
+          if (result.length) {
+            if (bcrypt.compareSync(password, result[0].password)) {
+              console.log(result)
+              const jwt_login= jwt.sign({id:result[0].user_id ,phone_no},
+              process.env.JWT_TOKEN_KEY,
+              {
+                  expiresIn: '48h'
+              }
+              );
+              result[0]["token"] = jwt_login;
+              console.log(result);
+              const last_login = new Date().toISOString();
+              db.query(`UPDATE ecom_mom.seller SET user.last_login= '${last_login}' WHERE id = '${result[0].user_id}';`)
+              res.status(200).send(result);
+            } else {
+              res.status(200).send({ message: "Invalid Password" });
+            }
+          } else {
+            res.status(400).send("Invalid Phone Number");
+          }
+        }
+      }
+    );
+  }
 }
 
 module.exports = AuthController;
