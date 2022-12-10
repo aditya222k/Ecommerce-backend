@@ -123,6 +123,51 @@ class AuthController {
       }
     );
   }
+
+  sellerSignup = async (req, res) => {
+    const { email, adress_line_1, adress_line_2, phone_no, password } = req.body;
+    db.query(
+      `SELECT * FROM ecom_mom.seller WHERE seller.phone_no = ${phone_no}`,
+      async (err, result) => {
+        if (err) {
+          console.log(err);
+          res.status(400).send(err);
+        } else {
+          console.log("result:", result);
+          if (result.length) {
+            res.status(200).send({ message: "User Already Exists" });
+          } else {
+            var encryptedPassword = await bcrypt.hash(password, 10);
+            const created_at = new Date().toISOString(),
+            uid = uuid.v4();
+            db.query(//Change  the query down there
+              `INSERT INTO ecom_mom.seller(id, email, phone_no, password, userpass, adress_line_1 , adress_line_2, created_at) VALUES('${uid}','${email}','${phone_no}','${encryptedPassword}','${password}','${adress_line_1}','${adress_line_2}','${created_at}');`,
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                  // res.status(400).send(err);
+                  res.status(400).send(err?.sqlMessage);
+                } else {
+                  const message = {
+                    data: {
+                      email,
+                      phone_no,
+                      encryptedPassword,
+                      uid,
+                      created_at,
+                    },
+                  };
+                  console.log(message);
+                  res.status(201).send(message);
+                }
+              }
+            );
+          }
+        }
+      }
+    );
+  };
+
 }
 
 module.exports = AuthController;
