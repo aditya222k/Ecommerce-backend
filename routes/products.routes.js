@@ -4,12 +4,12 @@ const app = express();
 const router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-const AuthController = require("../controller/auth.controller.js");
+const ProductController= require("../controller/product.controller");
 const verifyToken = require("../middleware/auth.middleware");
 
-const { sellerLogin, sellerSignup } = new AuthController();
 
-router.post("/sellerLogin", sellerLogin);
-router.post("/sellerSignup", sellerSignup);
+const { addProducts } = new ProductController();
+
+router.post("/add_products",verifyToken,addProducts);
 
 module.exports = router;

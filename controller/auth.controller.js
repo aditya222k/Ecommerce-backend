@@ -22,17 +22,20 @@ class AuthController {
         } else {
           if (result.length) {
             if (bcrypt.compareSync(password, result[0].password)) {
-              console.log(result)
-              const jwt_login= jwt.sign({id:result[0].user_id ,phone_no},
-              process.env.JWT_TOKEN_KEY,
-              {
-                  expiresIn: '48h'
-              }
+              console.log(result);
+              const jwt_login = jwt.sign(
+                { id: result[0].user_id, phone_no },
+                process.env.JWT_TOKEN_KEY,
+                {
+                  expiresIn: "48h",
+                }
               );
               result[0]["token"] = jwt_login;
               console.log(result);
               const last_login = new Date().toISOString();
-              db.query(`UPDATE ecom_mom.user SET user.last_login= '${last_login}' WHERE user_id = '${result[0].user_id}';`)
+              db.query(
+                `UPDATE ecom_mom.user SET user.last_login= '${last_login}' WHERE user_id = '${result[0].user_id}';`
+              );
               res.status(200).send(result);
             } else {
               res.status(200).send({ message: "Invalid Password" });
@@ -61,7 +64,7 @@ class AuthController {
           } else {
             var encryptedPassword = await bcrypt.hash(password, 10);
             const created_at = new Date().toISOString(),
-            uid = uuid.v4();
+              uid = uuid.v4();
             db.query(
               `INSERT INTO ecom_mom.user(user_id, username, password, userpass, first_name, last_name, phone_no, created_at) VALUES('${uid}','${user_name}','${encryptedPassword}','${password}','${first_name}','${last_name}','${phone_no}','${created_at}');`,
               (err, result) => {
@@ -90,28 +93,30 @@ class AuthController {
     );
   };
 
-  sellerLogin= async (req,res)=>{
+  sellerLogin = async (req, res) => {
     const { phone_no, password } = req.body;
     db.query(
       `SELECT * FROM ecom_mom.seller WHERE seller.phone_no = ${phone_no}`,
       async (err, result) => {
         if (err) {
           res.status(400).send(err);
-          console.log("error here:",err)
+          console.log("error here:", err);
         } else {
           if (result.length) {
             if (bcrypt.compareSync(password, result[0].password)) {
-              console.log(result)
-              const jwt_login= jwt.sign({id:result[0].user_id ,phone_no},
-              process.env.JWT_TOKEN_KEY,
-              {
-                  expiresIn: '48h'
-              }
+              console.log(result);
+              const jwt_login = jwt.sign(
+                { id: result[0].id, phone_no },
+                process.env.JWT_TOKEN_KEY,
+                {
+                  expiresIn: "48h",
+                }
               );
               result[0]["token"] = jwt_login;
-              console.log(result);
               const last_login = new Date().toISOString();
-              db.query(`UPDATE ecom_mom.seller SET user.last_login= '${last_login}' WHERE id = '${result[0].user_id}';`)
+              db.query(
+                `UPDATE ecom_mom.seller SET seller.last_login= '${last_login}' WHERE id = '${result[0].id}';`
+              );
               res.status(200).send(result);
             } else {
               res.status(200).send({ message: "Invalid Password" });
@@ -122,10 +127,11 @@ class AuthController {
         }
       }
     );
-  }
+  };
 
   sellerSignup = async (req, res) => {
-    const { email, adress_line_1, adress_line_2, phone_no, password } = req.body;
+    const { email, adress_line_1, adress_line_2, phone_no, password } =
+      req.body;
     db.query(
       `SELECT * FROM ecom_mom.seller WHERE seller.phone_no = ${phone_no}`,
       async (err, result) => {
@@ -139,8 +145,9 @@ class AuthController {
           } else {
             var encryptedPassword = await bcrypt.hash(password, 10);
             const created_at = new Date().toISOString(),
-            uid = uuid.v4();
-            db.query(//Change  the query down there
+              uid = uuid.v4();
+            db.query(
+              //Change  the query down there
               `INSERT INTO ecom_mom.seller(id, email, phone_no, password, userpass, adress_line_1 , adress_line_2, created_at) VALUES('${uid}','${email}','${phone_no}','${encryptedPassword}','${password}','${adress_line_1}','${adress_line_2}','${created_at}');`,
               (err, result) => {
                 if (err) {
@@ -167,7 +174,6 @@ class AuthController {
       }
     );
   };
-
 }
 
 module.exports = AuthController;
