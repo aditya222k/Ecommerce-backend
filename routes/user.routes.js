@@ -15,7 +15,7 @@ router.post("/login", userLogin);
 // code to check if verify token is working
 router.post("/check",verifyToken,(req,res)=>{
     console.log('req: ', req.mukesh.id);//this can be used to check the user id in product 
-    // console.log(verifyToken.res.body)
+    // console.log(verifyToken.res.body) 
     res.status(400).send("verify token is working")
     
 })
