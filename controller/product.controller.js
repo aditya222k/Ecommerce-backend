@@ -39,5 +39,18 @@ class ProductController {
       }
     );
   };
+  deleteProducts = async (req,res) =>{
+    const{id}=req.body;
+    db.query(
+      `DELETE FROM ecom_mom.product WHERE id = '${id}'`,
+      (err,result) => {
+        if(err){
+          res.status(200).send(err);
+        }else{
+          res.status(200).send('Product deleted');
+        }
+      }
+    )
+  }
 }
 module.exports = ProductController;

@@ -8,8 +8,9 @@ const ProductController= require("../controller/product.controller");
 const verifyToken = require("../middleware/auth.middleware");
 
 
-const { addProducts } = new ProductController();
+const { addProducts,deleteProducts } = new ProductController();
 
 router.post("/add_products",verifyToken,addProducts);
+router.post("/delete_products",deleteProducts);
 
 module.exports = router;
