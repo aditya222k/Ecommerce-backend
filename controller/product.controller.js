@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 const e = require("express");
 const jwt = require("jsonwebtoken");
 // modify product, delete product, How will I make sure the product is unique
-//
+
 class ProductController {
   addProducts = async (req, res) => {
     const { product_name, product_desc, price } = req.body;
