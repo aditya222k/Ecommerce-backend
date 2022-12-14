@@ -25,8 +25,7 @@ app.listen(port);
 
 // module.exports = router;
 
-// login register(post)
-// add  product @ seller(post)
+
 // get products @ buyer(get)
 // get products @ seller(get)
 // create address @ buyer(post)
